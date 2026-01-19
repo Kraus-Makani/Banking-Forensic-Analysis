@@ -5,8 +5,8 @@ The organization is experiencing sophisticated fraudulent activity characterized
 
 ## Tools and Methodology
 ### Tools
-Analysis and Data storage- Microsoft SQL Server
-Visualization- Microsoft Power BI
+- Analysis and Data storage- Microsoft SQL Server
+- Visualization- Microsoft Power BI
 ### Methodology
 #### SQL Server Data Manioulation
 - Data was imported into SQL server using the import/export wizard.
