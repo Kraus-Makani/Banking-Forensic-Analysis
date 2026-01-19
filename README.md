@@ -19,7 +19,7 @@ s of tables in Power query to identify them as dimension/fact.
   
 ## Findings
 ### Transaction Overview
-<img width="853" height="335" alt="Transaction Overview" src="https://github.com/user-attachments/assets/9a53a7bf-5300-44b0-b22d-65642445ca3e" />
+<img width="740" height="293" alt="Transaction Overview" src="https://github.com/user-attachments/assets/635fa7d7-0fab-4da3-8edb-d32520d5d2ee" />
 
 ### Authentication Methods
 <img width="578" height="325" alt="Authentication methods analysis" src="https://github.com/user-attachments/assets/749dbe35-fd83-4210-ad7e-6a266a99c608" />
