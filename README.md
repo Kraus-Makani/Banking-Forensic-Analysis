@@ -23,10 +23,14 @@ The organization is experiencing sophisticated fraudulent activity characterized
 ### Authentication Methods
 <img width="578" height="325" alt="Authentication methods analysis" src="https://github.com/user-attachments/assets/749dbe35-fd83-4210-ad7e-6a266a99c608" />
 
-The data suggests a specific vulnerability with the most unrelaibale authentication method that resulted in  8,655 fraudulent transaction was the PIN method with most vulnerable card type being Mastercard. 
+The data suggests a specific vulnerability with the most unrelaibale authentication method that resulted in  8,655 fraudulent transaction was the PIN method with most vulnerable card type being Mastercard. Mastercard was associated with the highest fraudulent transaction amounts.
 
 ### Geographical analysis
+<img width="505" height="281" alt="Geographical analysis" src="https://github.com/user-attachments/assets/a2e37bd7-754e-4144-8eda-abbe352fc0a3" />
+
+We noted as per the map visual that the largest trnsaction amounts associated with fruad came from Austrailia with the highest number of fraudulent transaction coming from India. The population India is significantly higher than the rest of the countries which could be causing this.
 Furthermore, the data suggests 313 accounts had geographically impossible travel (proximity anomalies) which indicate organized exploitation and duplicate transaction patterns indicate organized exploitation.
+
 ### Transaction and Spend Analysis
 <img width="578" height="324" alt="Transaction and Spend Analysis" src="https://github.com/user-attachments/assets/0e86671e-8a70-4ba5-a10d-6f9f8ca92e95" />
 
@@ -35,6 +39,12 @@ Furthermore, the data suggests 313 accounts had geographically impossible travel
 
 ### Benford's Law and Z-Score 
 <img width="578" height="325" alt="Benford&#39;s Law and Z- Score" src="https://github.com/user-attachments/assets/351f1206-5172-46af-9342-98183345fd2c" />
+
+#### Benford's Law
+Benford's Law is a forensic analysis technique used to detect anomalies by using natural signatures, because numbers are not distrubuted evenlky in the real world. Benford’s Law predicts that in any naturally occurring set of numbers, the leading digit "1" should appear about 30% of the time, while the digit "5" should only appear about 7.9% of the time. The data suggest that transaction amounts that begun with the number 1 occurred about 33% of the time which is above the expected of 30% according to Benford's Law. Which indicate fraudlent activity.
+
+#### Z-Score Analysis
+A Z-Score measures how many Standard Deviations a data point is from the Average (Mean). Z-Score = 0: The transaction is exactly the average amount. Z-Score = 1: The transaction is slightly higher than average, but still very normal. Z-Score = 3 or higher: The transaction is a significant outlier. In a normal business environment, 99.7% of all transactions should have a Z-Score between -3 and +3. Anything outside of this is a statistical anomaly. According to the Z-Score analysis, a significant number of transactions with Password authentication method have a score higher than the desired threshold, this suggests a potential leak of login credentials.
 
 ### SQL Analysis Findings (Refer to SQL Outputs file)
 
@@ -47,11 +57,37 @@ Furthermore, the data suggests 313 accounts had geographically impossible travel
 #### Dormant account activity
 We noted one account that had rapid account activity (5 transactions) after being dormant for a long period of time.
 
-## Recommendations
+### Executive Summary & Recommendations
+Problem Statement: Analysis confirms organized exploitation across multiple vectors, specifically targeting Mastercard PIN-based transactions and Password-authenticated account takeovers, resulting in significant volume spikes during March, April, August, and December.
 
-Preliminary  in Discover card ATM withdrawals and Password-authenticated transactions, particularly at the $500 amount. Furthermore, geographically impossible travel (proximity anomalies) and duplicate transaction patterns indicate organized exploitation.
+#### 1. Immediate Security & Authentication Hardening
+Finding: 8,655 fraudulent transactions were linked to the PIN method, with Mastercard being the most exploited card type.
 
+Finding: Z-Score analysis confirms Password-authenticated transactions are major outliers, suggesting compromised credentials.
 
+Recommendation: Phase out PIN-only authentication for high-value Mastercard transactions. Implement Mandatory Multi-Factor Authentication (MFA) for all accounts, specifically targeting users who have not updated passwords in the last 90 days.
+
+#### 2. Geofencing & Velocity Controls
+Finding: 313 accounts showed geographically impossible travel (proximity anomalies), and 515 transactions occurred at unusual times via POS/ATM.
+
+Recommendation: Deploy "Impossible Travel" logic within the authorization engine. If a card is used in two distant locations (e.g., India and Australia) within a window that exceeds flight times, the second transaction should be automatically blocked and the card frozen.
+
+#### 3. Fraud Pattern Recognition & Thresholds
+Finding: Benford’s Law and Z-Score analysis show a 33% spike in transactions starting with "1" and specific structuring just below the ZMW 5,000 reporting limit.
+
+Finding: One dormant account showed rapid reactivation (5 transactions), a classic sign of account takeover.
+
+Recommendation: Implement "Dormancy Triggers." Any account inactive for 3+ months should require secondary identity verification before a transaction over a certain threshold is approved. Lower the "Velocity Alert" threshold for transactions occurring within 5-minute intervals.
+
+#### 4. Regional Risk Management
+Finding: India has the highest volume of fraud (likely due to population), but Australia shows the highest monetary impact (transaction amounts).
+
+Recommendation: Apply Regional Risk Scoring. Transactions originating from India and Australia should undergo enhanced scrubbing during peak fraud months (March, April, August, and December) to protect against seasonal surges in Travel and Retail spending.
+
+#### Risk Level- Threat Type- Primary Recommendation
+CRITICAL- PIN/Password Breach- Enforce MFA and Mastercard PIN restrictions.
+HIGH - Organized Exploitation - Deploy Geofencing & Impossible Travel blocks.
+MEDIUM- Structuring/Dormancy - Adjust Velocity Limits & Reactivation Alerts.
 
 
 
